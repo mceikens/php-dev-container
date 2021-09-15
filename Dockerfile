@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:8.0-fpm
 
 USER root
 
@@ -48,8 +48,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN pecl install imagick
 
-RUN docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir \
-        --with-png-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) \
                           iconv \
                           gd \
@@ -87,7 +86,7 @@ RUN composer --version
 RUN pecl install redis
 RUN docker-php-ext-enable redis
 
-RUN pecl install xdebug-2.8.0 && docker-php-ext-enable xdebug
+RUN pecl install xdebug-3.0.0 && docker-php-ext-enable xdebug
 
 RUN echo "xdebug.max_nesting_level=-1" >> /usr/local/etc/php/conf.d/xdebug.ini
 
